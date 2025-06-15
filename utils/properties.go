@@ -12,9 +12,16 @@ var (
 )
 
 type Properties struct {
-	DatabaseDriver   string
-	ApplicationStage string
-	ApplicationName  string
+	DatabaseDriver           string
+	DatabaseConnectionString string
+	ApplicationStage         string
+	ApplicationName          string
+	LogFile                  string
+	LogLevel                 int
+
+	MongoDBConnectionString string
+	MongoBDDatabaseName     string
+	MongoDBCollectionName   string
 }
 
 // Load FromFile reads properties from a file named "application.properties" by reflection
@@ -46,7 +53,7 @@ func LoadApplicationPropertiesFromFile(fileName string) (err error) {
 			continue
 		}
 
-		parts := strings.Split(line, "=")
+		parts := strings.SplitN(line, "=", 2)
 		if parts[0] == "" || len(parts) < 2 {
 			continue
 		}

@@ -17,7 +17,7 @@ func (dao *RoleDAO) Create(role *entities.Role) error {
 		`INSERT INTO roles (
 			id, 
 			name
-		) VALUES ($1, $2)`,
+		) VALUES (?1, ?2)`,
 		role.Id,
 		role.Name,
 	)
@@ -32,7 +32,7 @@ func (dao *RoleDAO) Read(id int64) (*entities.Role, error) {
 			id, 
 			name 
 		FROM roles 
-		WHERE id = $1`,
+		WHERE id = ?1`,
 		id,
 	).Scan(
 		&role.Id,
@@ -45,8 +45,8 @@ func (dao *RoleDAO) Update(role *entities.Role) error {
 	_, err := dao.Connection.ExecContext(
 		dao.Ctx,
 		`UPDATE roles SET 
-			name = $1 
-		WHERE id = $2`,
+			name = ?1 
+		WHERE id = ?2`,
 		role.Name,
 		role.Id,
 	)
@@ -57,7 +57,7 @@ func (dao *RoleDAO) Delete(id int64) error {
 	_, err := dao.Connection.ExecContext(
 		dao.Ctx,
 		`DELETE FROM roles 
-		WHERE id = $1`,
+		WHERE id = ?1`,
 		id,
 	)
 	return err
