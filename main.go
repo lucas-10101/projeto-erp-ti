@@ -11,11 +11,10 @@ func Init() {
 }
 
 func main() {
-	//Init()
-
-	// Load properties from the configuration file
 
 	if err := utils.LoadApplicationPropertiesFromFile("application.properties"); err != nil {
 		fmt.Println("Error loading properties:", err)
 	}
+
+	Init()
 }
