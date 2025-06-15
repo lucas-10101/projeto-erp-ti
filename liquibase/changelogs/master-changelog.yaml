@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://json.schemastore.org/liquibase-3.2.json
+
+databaseChangeLog:
+  - changeSet:
+      id: tag-startdb
+      author: lucas-10101
+      changes:
+        - tagDatabase:
+            tag: startdb
