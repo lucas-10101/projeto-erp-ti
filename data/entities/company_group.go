@@ -1,9 +1,9 @@
 package entities
 
 type CompanyGroup struct {
-	Id                   int64
+	Id                   *int64
 	Name                 string
 	Activate             bool
-	CountryId            int64
-	CountrySubdivisionId int64
+	CountryId            *int64
+	CountrySubdivisionId *int64
 }

@@ -16,7 +16,7 @@ func InitLogger() {
 
 func GetMongoDBLogHandler() *utils.MongoDBLogHandler {
 
-	mongodbClient := database.CreateMongoDBConnection()
+	mongodbClient := database.GetMongoDBConnection()
 
 	handler := utils.MongoDBLogHandler{
 		ApplicationName: utils.ApplicationProperties.ApplicationName,
