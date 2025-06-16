@@ -43,8 +43,6 @@ func (h *MongoDBLogHandler) Handle(ctx context.Context, record slog.Record) erro
 		Message:         record.Message,
 	})
 
-	fmt.Println(err)
-
 	return err
 }
 
