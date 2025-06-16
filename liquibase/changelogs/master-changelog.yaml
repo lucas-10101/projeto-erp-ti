@@ -7,3 +7,14 @@ databaseChangeLog:
       changes:
         - tagDatabase:
             tag: startdb
+
+  - include:
+      file: versions/1.create-first-tables.sql
+      relativeToChangelogFile: true
+
+  - changeSet:
+      id: tag-first-tables
+      author: lucas-10101
+      changes:
+        - tagDatabase:
+            tag: first-tables
