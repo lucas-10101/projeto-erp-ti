@@ -15,7 +15,7 @@ func Init() {
 
 func main() {
 	if err := utils.LoadApplicationPropertiesFromFile(); err != nil {
-		panic(fmt.Sprintf("Error loading properties:", err))
+		panic(fmt.Sprintf("Error loading properties: %v", err))
 	}
 	Init()
 }
