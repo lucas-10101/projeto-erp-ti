@@ -11,25 +11,28 @@ type CompanyDAO struct {
 	Ctx        context.Context
 }
 
-func (dao *CompanyDAO) Create(company *entities.Company) error {
-	_, err := dao.Connection.ExecContext(
+func (dao *CompanyDAO) Create(company *entities.Company) (id int64, err error) {
+	row := dao.Connection.QueryRowContext(
 		dao.Ctx,
 		`INSERT INTO companies (
-			id, 
 			name, 
 			activate, 
 			country_id, 
 			country_subdivision_id, 
 			company_group_id
-		) VALUES (?1, ?2, ?3, ?4, ?5, ?6)`,
-		company.Id,
+		) VALUES ($1, $2, $3, $4, $5) returning id`,
 		company.Name,
 		company.Activate,
 		company.CountryId,
 		company.CountrySubdivisionId,
 		company.CompanyGroupId,
 	)
-	return err
+
+	if err = row.Err(); err == nil {
+		err = row.Scan(&id)
+	}
+
+	return id, err
 }
 
 func (dao *CompanyDAO) Read(id int64) (*entities.Company, error) {
@@ -44,7 +47,7 @@ func (dao *CompanyDAO) Read(id int64) (*entities.Company, error) {
 			country_subdivision_id, 
 			company_group_id 
 		FROM companies 
-		WHERE id = ?1`,
+		WHERE id = $1`,
 		id,
 	).Scan(
 		&company.Id,
@@ -61,12 +64,12 @@ func (dao *CompanyDAO) Update(company *entities.Company) error {
 	_, err := dao.Connection.ExecContext(
 		dao.Ctx,
 		`UPDATE companies SET 
-			name = ?1, 
-			activate = ?2, 
-			country_id = ?3, 
-			country_subdivision_id = ?4, 
-			company_group_id = ?5 
-		WHERE id = ?6`,
+			name = $1, 
+			activate = $2, 
+			country_id = $3, 
+			country_subdivision_id = $4, 
+			company_group_id = $5 
+		WHERE id = $6`,
 		company.Name,
 		company.Activate,
 		company.CountryId,
@@ -80,7 +83,7 @@ func (dao *CompanyDAO) Update(company *entities.Company) error {
 func (dao *CompanyDAO) Delete(id int64) error {
 	_, err := dao.Connection.ExecContext(
 		dao.Ctx,
-		`DELETE FROM companies WHERE id = ?1`,
+		`DELETE FROM companies WHERE id = $1`,
 		id,
 	)
 	return err

@@ -25,7 +25,9 @@ type Properties struct {
 }
 
 // Load FromFile reads properties from a file named "application.properties" by reflection
-func LoadApplicationPropertiesFromFile(fileName string) (err error) {
+func LoadApplicationPropertiesFromFile() (err error) {
+
+	fileName := os.Getenv("APPLICATION_PROPERTIES_FILE")
 
 	var file *os.File
 	file, err = os.Open(fileName)

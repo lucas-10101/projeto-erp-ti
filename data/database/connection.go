@@ -28,7 +28,7 @@ type Connection interface {
 
 func CreateConnection() {
 	if connection != nil {
-		panic("connection already exists")
+		return
 	}
 
 	var err error
@@ -55,7 +55,11 @@ func GetConnection() Connection {
 
 // NoSQL Default connection
 
-func CreateMongoDBConnection() *mongo.Client {
+func CreateMongoDBConnection() {
+
+	if mongodbConnection != nil {
+		return
+	}
 
 	options := options.Client().
 		ApplyURI(utils.ApplicationProperties.MongoDBConnectionString)
@@ -75,8 +79,6 @@ func CreateMongoDBConnection() *mongo.Client {
 	if err = mongodbConnection.Ping(context.TODO(), nil); err != nil {
 		panic(err)
 	}
-
-	return mongodbConnection
 }
 
 func GetMongoDBConnection() *mongo.Client {
