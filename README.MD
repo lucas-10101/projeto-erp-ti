@@ -38,3 +38,4 @@ After, you must run the update in your local database to create or update the da
 
 - If you get here after 'How to run this application ?', you are ready to make go build and run or go test ./... to test this application
 - On development environment ? Just drop you database if you want to restart or do an liquibase rollback to previous version of this applications
+- how ? go to ./liquibase dir containing the liquibase.properties file, run "liquibase update && liquibase rollback startdb && liquibase update" and you are ready to go

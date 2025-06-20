@@ -11,17 +11,20 @@ type RoleDAO struct {
 	Ctx        context.Context
 }
 
-func (dao *RoleDAO) Create(role *entities.Role) error {
-	_, err := dao.Connection.ExecContext(
+func (dao *RoleDAO) Create(role *entities.Role) (id int64, err error) {
+	row := dao.Connection.QueryRowContext(
 		dao.Ctx,
 		`INSERT INTO roles (
-			id, 
 			name
-		) VALUES ($1, $2)`,
-		role.Id,
+		) VALUES ($1) returning id`,
 		role.Name,
 	)
-	return err
+
+	if err = row.Err(); err == nil {
+		err = row.Scan(&id)
+	}
+
+	return id, err
 }
 
 func (dao *RoleDAO) Read(id int64) (*entities.Role, error) {
