@@ -10,153 +10,153 @@ import (
 	"testing"
 )
 
-func TestCreateRole(t *testing.T) {
+func TestCreateAccessGroup(t *testing.T) {
 
 	t.Setenv("APPLICATION_PROPERTIES_FILE", "../../application.properties")
 
 	utils.LoadApplicationPropertiesFromFile()
 	database.CreateConnection()
 
-	dao := &RoleDAO{
+	dao := &AccessGroupDAO{
 		Connection: database.GetConnection(),
 		Ctx:        context.Background(),
 	}
 
-	role := &entities.Role{
-		Name: "Test Role",
+	accessGroup := &entities.AccessGroup{
+		Name: "Test AccessGroup",
 	}
 
-	id, err := dao.Create(role)
+	id, err := dao.Create(accessGroup)
 
 	if err != nil || id <= 0 {
-		t.Fatalf("Failed to create role: %v", err)
+		t.Fatalf("Failed to create accessGroup: %v", err)
 	}
 }
 
-func TestReadRole(t *testing.T) {
+func TestReadAccessGroup(t *testing.T) {
 
 	t.Setenv("APPLICATION_PROPERTIES_FILE", "../../application.properties")
 
 	utils.LoadApplicationPropertiesFromFile()
 	database.CreateConnection()
 
-	dao := &RoleDAO{
+	dao := &AccessGroupDAO{
 		Connection: database.GetConnection(),
 		Ctx:        context.Background(),
 	}
 
-	role := &entities.Role{
-		Name: "Test Role",
+	accessGroup := &entities.AccessGroup{
+		Name: "Test AccessGroup",
 	}
 
-	id, err := dao.Create(role)
+	id, err := dao.Create(accessGroup)
 
 	if err != nil || id <= 0 {
-		t.Fatalf("Failed to create role: %v", err)
+		t.Fatalf("Failed to create accessGroup: %v", err)
 	}
 
-	role.Id = &id
+	accessGroup.Id = &id
 
-	var found *entities.Role
+	var found *entities.AccessGroup
 	found, err = dao.Read(id)
 
 	if err != nil {
-		t.Fatalf("Failed to read role: %v", err)
+		t.Fatalf("Failed to read accessGroup: %v", err)
 	}
 
-	expected, err := json.Marshal(role)
+	expected, err := json.Marshal(accessGroup)
 	if err != nil {
-		t.Fatalf("Failed to marshal expected role: %v", err)
+		t.Fatalf("Failed to marshal expected accessGroup: %v", err)
 	}
 
 	actual, err := json.Marshal(found)
 	if err != nil {
-		t.Fatalf("Failed to marshal found role: %v", err)
+		t.Fatalf("Failed to marshal found accessGroup: %v", err)
 	}
 
 	if string(expected) != string(actual) {
-		t.Errorf("Expected role %s, but got %s", expected, actual)
+		t.Errorf("Expected accessGroup %s, but got %s", expected, actual)
 	}
 
 }
 
-func TestUpdateRole(t *testing.T) {
+func TestUpdateAccessGroup(t *testing.T) {
 
 	t.Setenv("APPLICATION_PROPERTIES_FILE", "../../application.properties")
 
 	utils.LoadApplicationPropertiesFromFile()
 	database.CreateConnection()
 
-	dao := &RoleDAO{
+	dao := &AccessGroupDAO{
 		Connection: database.GetConnection(),
 		Ctx:        context.Background(),
 	}
 
-	role := &entities.Role{
-		Name: "Test Role",
+	accessGroup := &entities.AccessGroup{
+		Name: "Test AccessGroup",
 	}
 
-	id, err := dao.Create(role)
+	id, err := dao.Create(accessGroup)
 
 	if err != nil || id <= 0 {
-		t.Fatalf("Failed to create role: %v", err)
+		t.Fatalf("Failed to create accessGroup: %v", err)
 	}
 
-	role.Id = &id
-	role.Name = "Updated Role"
+	accessGroup.Id = &id
+	accessGroup.Name = "Updated AccessGroup"
 
-	err = dao.Update(role)
+	err = dao.Update(accessGroup)
 	if err != nil {
-		t.Fatalf("Failed to update role: %v", err)
+		t.Fatalf("Failed to update accessGroup: %v", err)
 	}
 
-	var found *entities.Role
+	var found *entities.AccessGroup
 	found, err = dao.Read(id)
 
 	if err != nil {
-		t.Fatalf("Failed to read role: %v", err)
+		t.Fatalf("Failed to read accessGroup: %v", err)
 	}
 
-	expected, err := json.Marshal(role)
+	expected, err := json.Marshal(accessGroup)
 	if err != nil {
-		t.Fatalf("Failed to marshal expected role: %v", err)
+		t.Fatalf("Failed to marshal expected accessGroup: %v", err)
 	}
 
 	actual, err := json.Marshal(found)
 	if err != nil {
-		t.Fatalf("Failed to marshal found role: %v", err)
+		t.Fatalf("Failed to marshal found accessGroup: %v", err)
 	}
 
 	if string(expected) != string(actual) {
-		t.Errorf("Expected role %s, but got %s", expected, actual)
+		t.Errorf("Expected accessGroup %s, but got %s", expected, actual)
 	}
 
 }
 
-func TestDeleteRole(t *testing.T) {
+func TestDeleteAccessGroup(t *testing.T) {
 
 	t.Setenv("APPLICATION_PROPERTIES_FILE", "../../application.properties")
 
 	utils.LoadApplicationPropertiesFromFile()
 	database.CreateConnection()
 
-	dao := &RoleDAO{
+	dao := &AccessGroupDAO{
 		Connection: database.GetConnection(),
 		Ctx:        context.Background(),
 	}
 
-	role := &entities.Role{
-		Name: "Test Role",
+	accessGroup := &entities.AccessGroup{
+		Name: "Test AccessGroup",
 	}
 
-	id, err := dao.Create(role)
+	id, err := dao.Create(accessGroup)
 
 	if err != nil || id <= 0 {
-		t.Fatalf("Failed to create role: %v", err)
+		t.Fatalf("Failed to create accessGroup: %v", err)
 	}
 
 	if err = dao.Delete(id); err != nil {
-		t.Fatalf("Failed to delete role: %v", err)
+		t.Fatalf("Failed to delete accessGroup: %v", err)
 	}
 
 	_, err = dao.Read(id)

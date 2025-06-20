@@ -11,13 +11,18 @@ type AccessGroupDAO struct {
 	Ctx        context.Context
 }
 
-func (dao *AccessGroupDAO) Create(ag *entities.AccessGroup) error {
-	_, err := dao.Connection.ExecContext(
+func (dao *AccessGroupDAO) Create(ag *entities.AccessGroup) (id int64, err error) {
+	row := dao.Connection.QueryRowContext(
 		dao.Ctx,
-		"INSERT INTO access_groups (id, name) VALUES ($1, $2)",
-		ag.Id, ag.Name,
+		"INSERT INTO access_groups (name) VALUES ($1) returning id",
+		ag.Name,
 	)
-	return err
+
+	if err = row.Err(); err == nil {
+		err = row.Scan(&id)
+	}
+
+	return id, err
 }
 
 func (dao *AccessGroupDAO) Read(id int64) (*entities.AccessGroup, error) {
@@ -39,6 +44,7 @@ func (dao *AccessGroupDAO) Update(ag *entities.AccessGroup) error {
 	return err
 }
 
+// TODO: Remove roles before deleting
 func (dao *AccessGroupDAO) Delete(id int64) error {
 	_, err := dao.Connection.ExecContext(
 		dao.Ctx,
